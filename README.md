@@ -1,0 +1,2 @@
+# ldr
+Simple template project 
