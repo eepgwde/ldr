@@ -14,6 +14,8 @@ Don't forget to test a large file.
 
 import sys, logging, os
 
+import pandas as pd
+
 from datetime import datetime, timezone, timedelta, date
 
 from collections import Counter
@@ -102,6 +104,14 @@ class Test(unittest.TestCase):
         self.assertIsNotNone(self.series)
 
         self.assertEqual(len(self.series), len(self.sources))
+
+    ## Use Selector
+    def test_05(self):
+        self.test_03()
+        self.assertIsNotNone(self.series)
+        df = pd.DataFrame(self.series).transpose()
+        s0 = Selector(df)
+        self.logger.info(s0)
 
 # The sys.argv line will complain to you if you run it with ipython
 # emacs. The ipython arguments are passed to unittest.main.

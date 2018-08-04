@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ## @author weaves
 ##
-## Container class for Track.
+## Provides utility methods for selecting across time ranges.
 
 import logging
 
@@ -10,26 +10,19 @@ import os
 
 import datetime
 
-from cached_property import cached_property
-
-from collections import UserList
-from operator import attrgetter
-
-from weaves import singledispatch1, Singleton
-
-from ldr._Filterer import Filter
-
 logger = logging.getLogger('Test')
 
-class Selector(UserList):
+class Selector(object):
 
-  _dt = None                    # the quality0 date.
+  _df = None                    # the quality0 date.
 
   """List of audio"""
-  def __init__(self, **kwargs):
+  def __init__(self, df):
     super().__init__()
+    self._df = df
 
-  def __repr__(self):
-    """utf-8 formatted text representation"""
-    return "string"
+  def __str__(self):
+    """text representation"""
+    return "'{0:s}: {1:s}'".format(self.__class__.__name__,
+                                   ", ".join(self._df.columns.values) )
 
