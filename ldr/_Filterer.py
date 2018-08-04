@@ -44,13 +44,16 @@ class Filter(object):
     r0 = None
     if desc == "datetime":
       if self._schema.desc == "fx":
-        ## Convert to month of year
+        ## Convert to month of year. It may have already been converted.
         if self._data.Month.dtype.kind == 'O':
           m0 = self._data.Month
           self._data.Month = pd.Series(list(
             map( lambda x: 1 + self._schema._months.index(x), m0)))
         
         r0 = pd.to_datetime(self._data[['Year', 'Month', 'Day']])
+
+      if self._schema.desc == "sales":
+        r0 = pd.to_datetime(self._data.Date)
 
     return r0
         
