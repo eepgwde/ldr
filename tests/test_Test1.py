@@ -68,6 +68,13 @@ class Test1(Test):
         self.assertIsNotNone(d0)
         self.logger.info("filter: datetime: {0:s} {1:s}".
                          format(str(type(d0)), d0.dtype.kind) )
+
+        d0 = self._filter.series("value")
+        self.assertIsNotNone(d0)
+        self.logger.info("filter: datetime: {0:s} {1:s}".
+                         format(str(type(d0)), d0.dtype.kind) )
+
+
         return
 
 #

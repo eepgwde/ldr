@@ -37,7 +37,7 @@ class Filter(object):
 
   def __str__(self):
     """text representation"""
-    return "'{0:s}'>".format("this")
+    return "'{0:s}: {1:s}'".format(self.__class__.__name__, self._schema.desc)
 
   def series(self, desc, **kwargs):
     """Return a colum from the data source as a Panda Series."""
@@ -66,9 +66,21 @@ class Filter(object):
       if "index" in kwargs:
         if kwargs["index"]:
           self._data = self._data.set_index(r0)
+      return r0
+
+    if desc == "value":
+      if self._schema.desc == "fx":
+        r0 = self._data["Price"]
+
+      if self._schema.desc == "sales":
+        r0 = self._data["Tickets Sold"]
+
+      if self._schema.desc == "weather":
+        r0 = self._data["TAVG"]
 
     return r0
         
   def __repr__(self):
     """utf-8 formatted text representation"""
     return self.__str__()
+
