@@ -50,6 +50,7 @@ class Test1(Test):
         self.assertIsNotNone(schema)
         self.logger.info("schema: {0:s}".format(str(schema)))
         self._schema = schema
+        self.logger.info("schema: desc: {0:s}".format(str(schema.desc)))
         return
 
     ## Build a schema by calling the prior test and check it.
