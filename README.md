@@ -4,16 +4,28 @@ Provides an example project to develop Python packages from.
 
 ## Current status
 
+### Design
 
+This works with the Makefile.
+
+The tests/ directory has files test_Test.py test_Test1.py and others.
+
+The setup process for tests is in test_Test.py; it creates the object, loads and
+sets up. test_Test1.py inherits from it.
+
+You should use test_Test1.py to test the sub-components and test it with
+
+ make UUT=test_Test1 check
+ 
+And then use the sub-components in the main test with
+
+ make check
+ 
+The tests/ directory contains file to use in testing.
 
 ## Requirements
 
- * python-mutagen
- * MP4Box from gpac
- * mp4chaps from mp4v2-utils
- * cached_property python module
  * unidecode python module
-   
 
 ## Installation
 

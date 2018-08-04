@@ -1,6 +1,6 @@
 ## @file Test1.py
 # @author weaves
-# @brief Unittest of MInfo
+# @brief Unittest of modules
 #
 # This module tests the ancillary operations and the 
 # 
@@ -17,7 +17,9 @@ from collections import Counter
 import unittest
 from tests.test_Test import Test
 
-## A test driver for GMus0
+from ldr import Schema
+
+## A test driver for modules
 #
 # @see GMus0
 class Test1(Test):
@@ -36,13 +38,25 @@ class Test1(Test):
         return
 
     ## Loaded?
-    ## Is utf-8 available as a unittest.TestCasefilesystemencoding()
     def test_000(self):
         self.assertIsNotNone(self.test0)
         return
 
-    def test_05(self):
-        self.assertIsNotNone(self.test0)
+    _schema = None
+
+    ## Test we can create a Schema object.
+    def test_003(self):
+        schema = Schema(desc = "sales")
+        self.assertIsNotNone(schema)
+        self.logger.info("schema: {0:s}".format(str(schema)))
+        self._schema = schema
+        return
+
+    ## Build a schema by calling the prior test and check it.
+    def test_005(self):
+        self.test_003()
+        self.assertIsNotNone(self._schema)
+        self.logger.info("schema: {0:s}".format(str(self._schema)))
         return
 
 #

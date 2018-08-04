@@ -1,8 +1,9 @@
 ## @file _Filterer.py
-# @author weaves
+# @author caz
 # @brief A filter
 #
-# Holds a filter.
+# Holds a filter for a data source. Takes a descriptive schema object and
+# produces Pandas objects.
 
 import logging
 from cached_property import cached_property
@@ -15,7 +16,7 @@ from weaves import Singleton
 logger = logging.getLogger('Test')
 
 class Filter(object):
-  """single audio file"""
+  """Single data source"""
 
   _window = None
   

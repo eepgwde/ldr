@@ -20,7 +20,7 @@ from collections import Counter
 
 import unittest
 
-from ldr import Filter, Selector
+from ldr import Filter, Selector, Schema
 
 logfile = os.environ['X_LOGFILE'] if os.environ.get('X_LOGFILE') is not None else "test.log"
 logging.basicConfig(filename=logfile, level=logging.DEBUG)
