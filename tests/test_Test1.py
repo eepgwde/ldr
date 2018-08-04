@@ -64,11 +64,10 @@ class Test1(Test):
     def test_007(self):
         self.test_005()
 
-        d0 = self._filter.series("datetime")
+        d0 = self._filter.series("datetime", index=True)
         self.assertIsNotNone(d0)
         self.logger.info("filter: datetime: {0:s} {1:s}".
                          format(str(type(d0)), d0.dtype.kind) )
-        self._filter._data['dt0'] = d0
         return
 
 #

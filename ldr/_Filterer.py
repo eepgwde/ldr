@@ -39,10 +39,15 @@ class Filter(object):
     """text representation"""
     return "'{0:s}'>".format("this")
 
-  def series(self, desc):
+  def series(self, desc, **kwargs):
     """Return a colum from the data source as a Panda Series."""
+
     r0 = None
+    idx0 = "idx"
+
     if desc == "datetime":
+      idx0 = "dt0"
+
       if self._schema.desc == "fx":
         ## Convert to month of year. It may have already been converted.
         if self._data.Month.dtype.kind == 'O':
@@ -54,6 +59,13 @@ class Filter(object):
 
       if self._schema.desc == "sales":
         r0 = pd.to_datetime(self._data.Date)
+
+      if self._schema.desc == "weather":
+        r0 = pd.to_datetime(self._data.DATE)
+
+      if "index" in kwargs:
+        if kwargs["index"]:
+          self._data = self._data.set_index(r0)
 
     return r0
         
