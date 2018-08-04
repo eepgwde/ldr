@@ -17,7 +17,7 @@ from collections import Counter
 import unittest
 from tests.test_Test import Test
 
-from ldr import Schema
+from ldr import Schema, Filter
 
 ## A test driver for modules
 #
@@ -46,7 +46,7 @@ class Test1(Test):
 
     ## Test we can create a Schema object.
     def test_003(self):
-        schema = Schema(desc = "sales")
+        schema = Schema(desc = "fx")
         self.assertIsNotNone(schema)
         self.logger.info("schema: {0:s}".format(str(schema)))
         self._schema = schema
@@ -56,8 +56,19 @@ class Test1(Test):
     ## Build a schema by calling the prior test and check it.
     def test_005(self):
         self.test_003()
-        self.assertIsNotNone(self._schema)
-        self.logger.info("schema: {0:s}".format(str(self._schema)))
+
+        self._filter = Filter("tests/media/gbp-usd.csv", self._schema)
+        self.assertIsNotNone(self._filter._data)
+        return
+
+    def test_007(self):
+        self.test_005()
+
+        d0 = self._filter.series("datetime")
+        self.assertIsNotNone(d0)
+        self.logger.info("filter: datetime: {0:s} {1:s}".
+                         format(str(type(d0)), d0.dtype.kind) )
+        self._filter._data['dt0'] = d0
         return
 
 #
