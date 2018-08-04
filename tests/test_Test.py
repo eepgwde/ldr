@@ -31,6 +31,10 @@ logger.addHandler(sh)
 media0 = os.path.join(os.path.dirname(__file__), "media")
 trs0 = os.path.join(os.path.dirname(__file__), "p1.lst")
 
+def postprocess0(f0):
+    f0.series("datetime", index=True)
+    return f0.series("value")
+
 class Test(unittest.TestCase):
     """
     A source directory dir0 is taken from the environment as SDIR or 
@@ -43,6 +47,10 @@ class Test(unittest.TestCase):
     files0 = []
     files = []
     logger = None
+
+    sources = { "fx": [ "tests/media/gbp-usd.csv", Schema(desc = "fx") ], 
+           "sales": [ "tests/media/sales.csv", Schema(desc = "sales") ],  
+           "weather": [ "tests/media/london.csv", Schema(desc = "weather") ] }
     
     ## Sets pandas options and logging.
     @classmethod
@@ -80,26 +88,21 @@ class Test(unittest.TestCase):
         self.logger.info('tearDown')
         return
 
-    ## Loaded?
-    ## Is utf-8 available as a filesystemencoding()
-    def test_000(self):
-        self.assertIsNotNone(self.test0)
+    ## Build filters
+    def test_00(self):
+        self.filters = list(map( lambda x: Filter(x[0], x[1]), self.sources.values()))
         return
 
-    ## There was an issue with unicode
+    ## Post-process.
+    def test_03(self):
+        self.test_00()
+        self.assertIsNotNone(self.filters)
 
-    def test_01(self):
-        self.assertIsNotNone(self.test0)
-        self.logger.info('test0: ' + str(self.test0))
-        
-        if not type(self).files:
-            type(self).files = type(self).files0
+        self.series = list(map(lambda x: postprocess0(x), self.filters))
+        self.assertIsNotNone(self.series)
 
-        self.file0, *type(self).files = type(self).files
-        test1 = self.file0.__class__.__name__
-        self.logger.info('test1: ' + str(test1))
+        self.assertEqual(len(self.series), len(self.sources))
 
-#
 # The sys.argv line will complain to you if you run it with ipython
 # emacs. The ipython arguments are passed to unittest.main.
 

@@ -54,14 +54,13 @@ class Filter(object):
           m0 = self._data.Month
           self._data.Month = pd.Series(list(
             map( lambda x: 1 + self._schema._months.index(x), m0)))
-        
         r0 = pd.to_datetime(self._data[['Year', 'Month', 'Day']])
-
-      if self._schema.desc == "sales":
+      elif self._schema.desc == "sales":
         r0 = pd.to_datetime(self._data.Date)
-
-      if self._schema.desc == "weather":
+      elif self._schema.desc == "weather":
         r0 = pd.to_datetime(self._data.DATE)
+
+      r0.rename(idx0, inplace=True)
 
       if "index" in kwargs:
         if kwargs["index"]:
@@ -69,14 +68,26 @@ class Filter(object):
       return r0
 
     if desc == "value":
+      name0 = self._schema.desc
+      if "name" in kwargs:
+        name0 = kwargs['name']
+
+      name1 = None
+      if "sname" in kwargs:
+        name1 = kwargs[sname]
+
       if self._schema.desc == "fx":
-        r0 = self._data["Price"]
+        if name1 == None:
+          name1 = "Price"
+      elif self._schema.desc == "sales":
+        if name1 == None:
+          name1 = "Tickets Sold"
+      elif self._schema.desc == "weather":
+        if name1 == None:
+          name1 = "TAVG"
 
-      if self._schema.desc == "sales":
-        r0 = self._data["Tickets Sold"]
-
-      if self._schema.desc == "weather":
-        r0 = self._data["TAVG"]
+      r0 = self._data[name1]
+      r0.rename(name0, inplace=True)
 
     return r0
         

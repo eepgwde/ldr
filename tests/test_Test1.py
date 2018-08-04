@@ -53,7 +53,7 @@ class Test1(Test):
         self.logger.info("schema: desc: {0:s}".format(str(schema.desc)))
         return
 
-    ## Build a schema by calling the prior test and check it.
+    ## Build a schema by calling the previous test for the schema.
     def test_005(self):
         self.test_003()
 
@@ -61,6 +61,7 @@ class Test1(Test):
         self.assertIsNotNone(self._filter._data)
         return
 
+    ## And check the names of the date index and the value.
     def test_007(self):
         self.test_005()
 
@@ -71,6 +72,8 @@ class Test1(Test):
 
         d0 = self._filter.series("value")
         self.assertIsNotNone(d0)
+        self.assertEqual(d0.name, "fx")
+        self.assertEqual(d0.index.name, "dt0")
         self.logger.info("filter: datetime: {0:s} {1:s}".
                          format(str(type(d0)), d0.dtype.kind) )
 
