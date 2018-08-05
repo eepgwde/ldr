@@ -29,7 +29,7 @@ class Filter(object):
   _data = None
   
   def __init__(self, fname, schema):
-    logger.info("Track: ctr: " + fname)
+    logger.info("file: " + fname)
     self._schema = schema
     self._fname = fname
     self._data = pd.read_csv(fname)
@@ -40,7 +40,7 @@ class Filter(object):
     return "'{0:s}: {1:s}'".format(self.__class__.__name__, self._schema.desc)
 
   def series(self, desc, **kwargs):
-    """Return a colum from the data source as a Panda Series."""
+    """Process columns from the data source as Panda Series."""
 
     r0 = None
     idx0 = "idx"
@@ -55,6 +55,8 @@ class Filter(object):
           self._data.Month = pd.Series(list(
             map( lambda x: 1 + self._schema._months.index(x), m0)))
         r0 = pd.to_datetime(self._data[['Year', 'Month', 'Day']])
+      elif self._schema.desc == "fx-datahub":
+        r0 = pd.to_datetime(self._data.Date)
       elif self._schema.desc == "sales":
         r0 = pd.to_datetime(self._data.Date)
       elif self._schema.desc == "weather":
@@ -79,6 +81,9 @@ class Filter(object):
       if self._schema.desc == "fx":
         if name1 == None:
           name1 = "Price"
+      if self._schema.desc == "fx-datahub":
+        if name1 == None:
+          name1 = "Value"
       elif self._schema.desc == "sales":
         if name1 == None:
           name1 = "Tickets Sold"
@@ -87,6 +92,10 @@ class Filter(object):
           name1 = "TAVG"
 
       r0 = self._data[name1]
+
+      if self._schema.desc == "fx-datahub":
+        r0 = 1/r0
+
       r0.rename(name0, inplace=True)
 
     return r0

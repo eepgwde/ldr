@@ -23,6 +23,7 @@ from collections import Counter
 import unittest
 
 from ldr import Filter, Selector, Schema
+from ingresso import Sales0
 
 logfile = os.environ['X_LOGFILE'] if os.environ.get('X_LOGFILE') is not None else "test.log"
 logging.basicConfig(filename=logfile, level=logging.DEBUG)
@@ -50,7 +51,8 @@ class Test(unittest.TestCase):
     files = []
     logger = None
 
-    sources = { "fx": [ "tests/media/gbp-usd.csv", Schema(desc = "fx") ], 
+    sources = { "fx": [ "tests/media/gbp-usd.csv", Schema(desc = "fx") ],
+                "fx2": [ "tests/media/usd-gbp.csv", Schema(desc = "fx-datahub") ],
            "sales": [ "tests/media/sales.csv", Schema(desc = "sales") ],  
            "weather": [ "tests/media/london.csv", Schema(desc = "weather") ] }
     
@@ -111,6 +113,14 @@ class Test(unittest.TestCase):
         self.assertIsNotNone(self.series)
         df = pd.DataFrame(self.series).transpose()
         s0 = Selector(df)
+        self.logger.info(s0)
+
+    ## Use Sales0
+    def test_07(self):
+        self.test_03()
+        self.assertIsNotNone(self.series)
+        df = pd.DataFrame(self.series).transpose()
+        s0 = Sales0(df)
         self.logger.info(s0)
 
 # The sys.argv line will complain to you if you run it with ipython

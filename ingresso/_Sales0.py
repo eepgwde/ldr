@@ -8,11 +8,13 @@ import logging
 import glob
 import os
 
+from ldr import Selector
+
 import datetime
 
 logger = logging.getLogger('Test')
 
-class Selector(object):
+class Sales0(Selector):
   """
   Provides a container for a merged dataframe of the variables of interest.
 
@@ -23,11 +25,10 @@ class Selector(object):
 
   """Takes a merged dataframe"""
   def __init__(self, df):
-    super().__init__()
-    self._df = df
+    super().__init__(df)
 
-  def __str__(self):
-    """text representation"""
-    return "'{0:s}: {1:s}'".format(self.__class__.__name__,
-                                   ", ".join(self._df.columns.values) )
+  """Weather: """
+  def weather(self, period0="M"):
+    self.weather = self._df['weather'].resample(period0).mean()
+
 

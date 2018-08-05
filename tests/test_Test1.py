@@ -80,6 +80,23 @@ class Test1(Test):
 
         return
 
+    def test_009(self):
+        schema = Schema(desc = "fx-datahub")
+        self.assertIsNotNone(schema)
+        self.logger.info("schema: {0:s}".format(str(schema)))
+        self._schema = schema
+        self.logger.info("schema: desc: {0:s}".format(str(schema.desc)))
+        return
+
+    ## Build a schema by calling the previous test for the schema.
+    def test_011(self):
+        self.test_009()
+
+        self._filter = Filter("tests/media/usd-gbp.csv", self._schema)
+        self.assertIsNotNone(self._filter._data)
+        return
+
+
 #
 # The sys.argv line will complain to you if you run it with ipython
 # emacs. The ipython arguments are passed to unittest.main.
