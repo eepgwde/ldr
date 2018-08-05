@@ -53,8 +53,9 @@ class Test(unittest.TestCase):
 
     sources = { "fx": [ "tests/media/gbp-usd.csv", Schema(desc = "fx") ],
                 "fx2": [ "tests/media/usd-gbp.csv", Schema(desc = "fx-datahub") ],
-           "sales": [ "tests/media/sales.csv", Schema(desc = "sales") ],  
-           "weather": [ "tests/media/london.csv", Schema(desc = "weather") ] }
+                "sales": [ "tests/media/sales.csv", Schema(desc = "sales") ],  
+                "weather": [ "tests/media/london.csv", Schema(desc = "weather") ],
+                "weather2": [ "tests/media/metoffice.csv", Schema(desc = "weather-metoffice") ] }
     
     ## Sets pandas options and logging.
     @classmethod
@@ -111,7 +112,8 @@ class Test(unittest.TestCase):
     def test_05(self):
         self.test_03()
         self.assertIsNotNone(self.series)
-        df = pd.DataFrame(self.series).transpose()
+        s0s = list(filter(lambda x: x.name != "weather-metoffice", self.series))
+        df = pd.DataFrame(s0s).transpose()
         s0 = Selector(df)
         self.logger.info(s0)
 
@@ -119,8 +121,11 @@ class Test(unittest.TestCase):
     def test_07(self):
         self.test_03()
         self.assertIsNotNone(self.series)
-        df = pd.DataFrame(self.series).transpose()
-        s0 = Sales0(df)
+        s0s = list(filter(lambda x: x.name != "weather-metoffice", self.series))
+        s1 = list(filter(lambda x: x.name == "weather-metoffice", self.series))
+        df = pd.DataFrame(s0s).transpose()
+        s0 = Sales0(df, metoffice=s1)
+        s0.constrain()
         self.logger.info(s0)
 
 # The sys.argv line will complain to you if you run it with ipython

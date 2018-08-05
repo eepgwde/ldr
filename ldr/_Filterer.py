@@ -61,6 +61,12 @@ class Filter(object):
         r0 = pd.to_datetime(self._data.Date)
       elif self._schema.desc == "weather":
         r0 = pd.to_datetime(self._data.DATE)
+      elif self._schema.desc == "weather-metoffice":
+        x0 = self._data
+        x0['day'] = 1
+        x1 = x0.rename(index=str, columns={"yyyy":"year", "mm":"month"})
+        r0 = pd.to_datetime(x1[['year', 'month', 'day']])
+        r0 = r0.dt.to_period('M')
 
       r0.rename(idx0, inplace=True)
 
@@ -90,9 +96,13 @@ class Filter(object):
       elif self._schema.desc == "weather":
         if name1 == None:
           name1 = "TAVG"
+      elif self._schema.desc == "weather-metoffice":
+        if name1 == None:
+          name1 = "tmin"
 
       r0 = self._data[name1]
 
+      ## These are held as $1 buys £x so invert.
       if self._schema.desc == "fx-datahub":
         r0 = 1/r0
 

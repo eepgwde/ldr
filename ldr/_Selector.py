@@ -21,10 +21,12 @@ class Selector(object):
 
   _df = None                    # the quality0 date.
 
-  """Takes a merged dataframe"""
-  def __init__(self, df):
+  """Takes a merged dataframe. Extra sources can be attached with kwargs."""
+  def __init__(self, df, **kwargs):
     super().__init__()
     self._df = df
+    for key, value in kwargs.items():
+      setattr(self, key, value)
 
   def __str__(self):
     """text representation"""
