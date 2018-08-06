@@ -101,13 +101,7 @@ class Filter(object):
           name1 = "tmin"
 
       r0 = self._data[name1]
-
-      ## These are held as $1 buys £x so invert.
-      if self._schema.desc == "fx-fxcm":
-        r0 = 1/r0
-
       r0.rename(name0, inplace=True)
-
     return r0
         
   def __repr__(self):

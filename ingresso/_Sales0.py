@@ -31,28 +31,33 @@ class Sales0(Selector):
   _df = None                    # the source frame
   _cdf = None                   # the constrained frame
 
-  """Takes a merged dataframe"""
   def __init__(self, df, **kwargs):
+    """Takes a merged dataframe and optional reference frames"""
     super().__init__(df, **kwargs)
 
-  """Restrict the dataframe to the range of one series."""
   def constrain(self, sname="sales"):
+    """Restrict the dataframe to the range of one series and force to daily quotes."""
     x0 = self._df[sname]
     x1 = x0[x0.notna()].index
     self._cdf = self._df[(self._df.index >= x1[0]) & (self._df.index <= x1[-1]) ]
+    self._cdf = self._cdf.resample("D").mean()
     return
 
   def fx(self):
     """
     fx sources are combined.
 
-    Issue with overwriting columns.
+    Issue with overwriting columns means that assign has to be used - ignoring
+    indices.
     """
-    
-    fx = self._cdf['fx']
-    fx1 = self._cdf['fx-fxcm']
-    fx0 = self.coalesce(fx, fx1)
-    self._cdf = self._cdf.assign(fx0=fx0.values)
+
+    if getattr(self, 'fx_op', 'single') == 'merge':
+      fx = self._cdf['fx']
+      fx1 = self._cdf['fx-fxcm']
+      fx0 = self.coalesce(fx, fx1)
+      self._cdf = self._cdf.assign(fx0=fx0.values)
+    else:
+      self._cdf = self._cdf.assign(fx0=self._cdf['fx-fxcm'])
     return 
 
   """Weather """
