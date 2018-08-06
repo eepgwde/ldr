@@ -55,8 +55,8 @@ class Filter(object):
           self._data.Month = pd.Series(list(
             map( lambda x: 1 + self._schema._months.index(x), m0)))
         r0 = pd.to_datetime(self._data[['Year', 'Month', 'Day']])
-      elif self._schema.desc == "fx-datahub":
-        r0 = pd.to_datetime(self._data.Date)
+      elif self._schema.desc == "fx-fxcm":
+        r0 = pd.to_datetime(self._data['date'])
       elif self._schema.desc == "sales":
         r0 = pd.to_datetime(self._data.Date)
       elif self._schema.desc == "weather":
@@ -87,9 +87,9 @@ class Filter(object):
       if self._schema.desc == "fx":
         if name1 == None:
           name1 = "Price"
-      if self._schema.desc == "fx-datahub":
+      if self._schema.desc == "fx-fxcm":
         if name1 == None:
-          name1 = "Value"
+          name1 = "bidclose"
       elif self._schema.desc == "sales":
         if name1 == None:
           name1 = "Tickets Sold"
@@ -103,7 +103,7 @@ class Filter(object):
       r0 = self._data[name1]
 
       ## These are held as $1 buys £x so invert.
-      if self._schema.desc == "fx-datahub":
+      if self._schema.desc == "fx-fxcm":
         r0 = 1/r0
 
       r0.rename(name0, inplace=True)

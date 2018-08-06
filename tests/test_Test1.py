@@ -81,7 +81,7 @@ class Test1(Test):
         return
 
     def test_009(self):
-        schema = Schema(desc = "fx-datahub")
+        schema = Schema(desc = "fx-fxcm")
         self.assertIsNotNone(schema)
         self.logger.info("schema: {0:s}".format(str(schema)))
         self._schema = schema
@@ -92,7 +92,7 @@ class Test1(Test):
     def test_011(self):
         self.test_009()
 
-        self._filter = Filter("tests/media/usd-gbp.csv", self._schema)
+        self._filter = Filter("tests/media/gbp-usd2.csv", self._schema)
         self.assertIsNotNone(self._filter._data)
         return
 

@@ -50,7 +50,7 @@ class Sales0(Selector):
     """
     
     fx = self._cdf['fx']
-    fx1 = self._cdf['fx-datahub']
+    fx1 = self._cdf['fx-fxcm']
     fx0 = self.coalesce(fx, fx1)
     self._cdf = self._cdf.assign(fx0=fx0.values)
     return 
@@ -61,10 +61,16 @@ class Sales0(Selector):
 
   def __str__(self):
     """text representation"""
-    s0 = "()"
-    if not( (self._cdf == None) | (not self._cdf) ):
+    s0 = ""
+
+    if type(self._cdf) == type(None):
+      pass
+    elif self._cdf.empty:
+      pass
+    else:
       s0 = ", ".join(self._cdf.columns.values)
-    return "'{0:s}: {1:s}'".format(self.__class__.__name__, s0)
+
+    return "'{0:s}: ({1:s})'".format(self.__class__.__name__, s0)
 
 
 

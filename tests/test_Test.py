@@ -52,7 +52,7 @@ class Test(unittest.TestCase):
     logger = None
 
     sources = { "fx": [ "tests/media/gbp-usd.csv", Schema(desc = "fx") ],
-                "fx2": [ "tests/media/usd-gbp.csv", Schema(desc = "fx-datahub") ],
+                "fx2": [ "tests/media/gbp-usd2.csv", Schema(desc = "fx-fxcm") ],
                 "sales": [ "tests/media/sales.csv", Schema(desc = "sales") ],  
                 "weather": [ "tests/media/london.csv", Schema(desc = "weather") ],
                 "weather2": [ "tests/media/metoffice.csv", Schema(desc = "weather-metoffice") ] }
