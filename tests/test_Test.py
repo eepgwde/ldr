@@ -126,6 +126,7 @@ class Test(unittest.TestCase):
         df = pd.DataFrame(s0s).transpose()
         s0 = Sales0(df, metoffice=s1)
         s0.constrain()
+        s0.fx()
         self.logger.info(s0)
 
 # The sys.argv line will complain to you if you run it with ipython

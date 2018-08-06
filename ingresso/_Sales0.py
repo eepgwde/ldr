@@ -15,10 +15,17 @@ import datetime
 logger = logging.getLogger('Test')
 
 class Sales0(Selector):
-  """
-  Provides a container for a merged dataframe of the variables of interest.
+  """Provides a container for a merged dataframe of the variables of interest.
 
   These methods assume all the data is daily and performs some corrections.
+
+  Eventually, we want to provide monthly metrics.
+
+  Sales are every day of the week, but fx is only work-days, but the two FX
+  sources have bald spots.
+
+  These methods need to correct the data in the following ways.
+
   """
 
   _df = None                    # the source frame
@@ -35,8 +42,29 @@ class Sales0(Selector):
     self._cdf = self._df[(self._df.index >= x1[0]) & (self._df.index <= x1[-1]) ]
     return
 
+  def fx(self):
+    """
+    fx sources are combined.
+
+    Issue with overwriting columns.
+    """
+    
+    fx = self._cdf['fx']
+    fx1 = self._cdf['fx-datahub']
+    fx0 = self.coalesce(fx, fx1)
+    self._cdf = self._cdf.assign(fx0=fx0.values)
+    return 
+
   """Weather """
   def weather(self, period0="M"):
     self.weather = self._df['weather'].resample(period0).mean()
+
+  def __str__(self):
+    """text representation"""
+    s0 = "()"
+    if not( (self._cdf == None) | (not self._cdf) ):
+      s0 = ", ".join(self._cdf.columns.values)
+    return "'{0:s}: {1:s}'".format(self.__class__.__name__, s0)
+
 
 

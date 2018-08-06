@@ -39,6 +39,19 @@ class Selector(object):
     val_t1 = val_t1.sort_values('R', ascending=False).round(1)
     return val_t1
 
+  @classmethod
+  def indices0(cls, s0, period0="M"):
+    """
+    For a series, within each period, return those indices in that period
+    where count is null.
+    """
+    x1 = s0.resample(period0).count()
+    return x1[x1 == 0].index
+
+  @classmethod
+  def coalesce(cls, left0, right0):
+    return left0.where(left0.notnull(), right0)
+
   def __str__(self):
     """text representation"""
     return "'{0:s}: {1:s}'".format(self.__class__.__name__,
