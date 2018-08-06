@@ -32,7 +32,12 @@ class Sales0(Selector):
   _cdf = None                   # the constrained frame
 
   def __init__(self, df, **kwargs):
-    """Takes a merged dataframe and optional reference frames"""
+    """
+    Takes a merged dataframe and optional items.
+
+    See fx(), you can add an fx_op="merge" to coalesce the two FX series.
+    By default, it is set to "single" and uses fx-fxcm.
+    """
     super().__init__(df, **kwargs)
 
   def constrain(self, sname="sales"):
@@ -60,9 +65,15 @@ class Sales0(Selector):
       self._cdf = self._cdf.assign(fx0=self._cdf['fx-fxcm'])
     return 
 
-  """Weather """
-  def weather(self, period0="M"):
-    self.weather = self._df['weather'].resample(period0).mean()
+  def resample(self, sname, period0="M"):
+    """
+    Resample a series by name over a period.
+
+    This changes the index to a PeriodIndex and not a DatetimeIndex.
+    """
+    w0 = self._cdf[sname].resample(period0).mean()
+    w0.index = w0.index.to_period(period0)
+    return w0
 
   def __str__(self):
     """text representation"""

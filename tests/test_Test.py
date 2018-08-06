@@ -128,6 +128,9 @@ class Test(unittest.TestCase):
         s0.constrain()
         s0.fx()
         self.logger.info(s0)
+        s0s = list(map(lambda x: s0.resample(x), ['fx0', 'weather', 'sales']))
+        df = pd.DataFrame(s0s).transpose()
+        self.logger.info(Selector.nulls(df))
 
 # The sys.argv line will complain to you if you run it with ipython
 # emacs. The ipython arguments are passed to unittest.main.

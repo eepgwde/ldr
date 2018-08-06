@@ -1,0 +1,5 @@
+./sales.csv /misc/build/0/FinalProject/src/sales.csv
+./gbp-usd.csv /misc/build/0/FinalProject/src/gbp-usd.csv
+./london.csv /misc/build/0/FinalProject/src/london.csv
+./gbp-usd2.csv /misc/build/0/FinalProject/src/gbp-usd2.csv
+./metoffice.csv /misc/build/0/FinalProject/src/weather.csv
